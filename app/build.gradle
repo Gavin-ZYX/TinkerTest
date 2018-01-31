@@ -1,0 +1,44 @@
+apply plugin: 'com.android.application'
+apply from: 'tinkerpatch.gradle'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
+    defaultConfig {
+        applicationId "com.gavin.com.tinkertest2"
+        minSdkVersion 15
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+    }
+
+    //需要配置自己的签名
+    signingConfigs {
+        release {
+            try {
+                keyAlias 'tinkerTest'
+                keyPassword 'zhouyouxi'
+                storeFile file('tinkerTest.jks')
+                storePassword 'zhouyouxi'
+            }
+            catch (ex) {
+                //throw new Exception("You should define KEYSTORE_PASSWORD and KEY_PASSWORD in gradle.properties")
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+        }
+    }
+
+}
+
+dependencies {
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+// 若使用annotation需要单独引用,对于tinker的其他库都无需再引用
+    provided("com.tencent.tinker:tinker-android-anno:1.7.7")
+    compile("com.tinkerpatch.sdk:tinkerpatch-android-sdk:1.1.4")
+}
